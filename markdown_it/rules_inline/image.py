@@ -15,11 +15,18 @@ def image(state: StateInline, silent: bool) -> bool:
     if state.src[state.pos] != "!":
         return False
 
-    if state.pos + 1 < state.posMax and state.src[state.pos + 1] != "[":
+    pos = state.pos + 1
+    if pos >= state.posMax:
+        return False
+    use_figure = state.src[pos] == "!"
+    if use_figure:
+        pos += 1
+
+    if pos < state.posMax and state.src[pos] != "[":
         return False
 
-    labelStart = state.pos + 2
-    labelEnd = state.md.helpers.parseLinkLabel(state, state.pos + 1, False)
+    labelStart = pos + 1
+    labelEnd = state.md.helpers.parseLinkLabel(state, pos, False)
 
     # parser failed to find ']', so it's not a valid link
     if labelEnd < 0:
@@ -132,7 +139,7 @@ def image(state: StateInline, silent: bool) -> bool:
         state.md.inline.parse(content, state.md, state.env, tokens)
 
         token = state.push("image", "img", 0)
-        token.attrs = {"src": href, "alt": ""}
+        token.attrs = {"src": href, "alt": "", "figure": use_figure}
         token.children = tokens or None
         token.content = content
 

@@ -124,3 +124,36 @@ def test_issue_fixes(line, title, input, expected):
     text = md.render(input)
     print(text)
     assert text.rstrip() == expected.rstrip()
+
+
+# @pytest.mark.parametrize(
+#     "line,title,input,expected",
+#     read_fixture_file(FIXTURE_PATH.joinpath("xss.md")),
+# )
+# def test_xss(line, title, input, expected):
+#     md = MarkdownIt()
+#     text = md.render(input)
+#     print(text)
+#     assert text.rstrip() == expected.rstrip()
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("proto.md")),
+)
+def test_proto(line, title, input, expected):
+    md = MarkdownIt()
+    text = md.render(input)
+    print(text)
+    assert text.rstrip() == expected.rstrip()
+
+
+# @pytest.mark.parametrize(
+#     "line,title,input,expected",
+#     read_fixture_file(FIXTURE_PATH.joinpath("punycode.md")),
+# )
+# def test_punnycode(line, title, input, expected):
+#     md = MarkdownIt()
+#     text = md.render(input)
+#     print(text)
+#     assert text.rstrip() == expected.rstrip()
